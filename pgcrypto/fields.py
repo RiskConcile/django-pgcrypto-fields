@@ -42,6 +42,10 @@ class EmailPGPPublicKeyField(PGPPublicKeyFieldMixin, models.EmailField):
     """Email PGP public key encrypted field."""
 
 
+class JSONPGPPublicKeyField(PGPPublicKeyFieldMixin, models.JSONField):
+    """JSON PGP public key encrypted field."""
+
+
 class IntegerPGPPublicKeyField(PGPPublicKeyFieldMixin, models.IntegerField):
     """Integer PGP public key encrypted field."""
     encrypt_sql = PGP_PUB_ENCRYPT_SQL_WITH_NULLIF
