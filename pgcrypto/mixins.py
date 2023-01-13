@@ -133,11 +133,11 @@ class PGPPublicKeyFieldMixin(PGPMixin):
 
     def get_placeholder(self, value=None, compiler=None, connection=None):
         """Tell postgres to encrypt this field using PGP."""
-        return self.encrypt_sql.format(get_setting(connection, 'PUBLIC_PGP_KEY'))
+        return self.encrypt_sql.format(KeyStore.get_public_key())
 
     def get_decrypt_sql(self, connection):
         """Get decrypt sql."""
-        return self.decrypt_sql.format(get_setting(connection, 'PRIVATE_PGP_KEY'))
+        return self.decrypt_sql.format(KeyStore.get_private_key())
 
 
 class PGPSymmetricKeyFieldMixin(PGPMixin):
