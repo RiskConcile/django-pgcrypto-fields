@@ -1,3 +1,6 @@
+from contextlib import contextmanager
+
+
 class KeyStore:
     public_key = None
     private_key = None
@@ -31,7 +34,7 @@ class KeyStore:
 
 
 @contextmanager
-def key_provider(public_key:str, private_key:str):
+def key_provider(public_key: str, private_key: str):
     KeyStore.set_keys(public_key, private_key)
     try:
         yield None
