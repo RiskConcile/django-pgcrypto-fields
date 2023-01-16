@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db.models.expressions import Col
 from django.utils.functional import cached_property
-from keystore import KeyStore
+from pgcrypto.keystore import KeyStore
 
 from pgcrypto import (
     PGP_PUB_DECRYPT_SQL,
