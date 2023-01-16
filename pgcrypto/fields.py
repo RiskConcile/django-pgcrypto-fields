@@ -1,5 +1,4 @@
 from django.db import models
-from keystore import KeyStore
 
 from pgcrypto import (
     DIGEST_SQL,
