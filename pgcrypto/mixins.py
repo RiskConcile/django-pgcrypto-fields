@@ -1,6 +1,7 @@
 from django.conf import settings
-from django.db.models.expressions import Col
+from django.db.models.expressions import Col, Case
 from django.utils.functional import cached_property
+from django.db.models.functions.comparison import Cast
 from pgcrypto.keystore import KeyStore
 
 from pgcrypto import (
@@ -134,11 +135,24 @@ class PGPPublicKeyFieldMixin(PGPMixin):
 
     def get_placeholder(self, value=None, compiler=None, connection=None):
         """Tell postgres to encrypt this field using PGP."""
+        if self._is_case_expression(value):
+            return "%s"
         return self.encrypt_sql.format(KeyStore.get_public_key())
 
     def get_decrypt_sql(self, connection):
         """Get decrypt sql."""
         return self.decrypt_sql.format(KeyStore.get_private_key())
+
+    def _is_case_expression(self, value):
+        if not hasattr(value, 'get_source_expressions'):
+            return False
+        if isinstance(value, Case):
+            return True
+        if isinstance(value, Cast):
+            source_expressions = value.get_source_expressions()
+            if len(source_expressions) == 1:
+                return self._is_case_expression(source_expressions[0])
+        return False
 
 
 class PGPSymmetricKeyFieldMixin(PGPMixin):
