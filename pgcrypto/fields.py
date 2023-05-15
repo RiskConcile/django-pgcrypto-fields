@@ -87,6 +87,8 @@ class BooleanPGPPublicKeyField(PGPPublicKeyFieldMixin, models.BooleanField):
 class EmailPGPSymmetricKeyField(PGPSymmetricKeyFieldMixin, models.EmailField):
     """Email PGP symmetric key encrypted field."""
 
+class JSONSymmetricKeyField(PGPSymmetricKeyFieldMixin, models.JSONField):
+    """JSON symmetric key encrypted field."""
 
 class IntegerPGPSymmetricKeyField(PGPSymmetricKeyFieldMixin, models.IntegerField):
     """Integer PGP symmetric key encrypted field."""
