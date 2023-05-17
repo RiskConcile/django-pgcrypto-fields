@@ -161,13 +161,26 @@ class PGPSymmetricKeyFieldMixin(PGPMixin):
     decrypt_sql = PGP_SYM_DECRYPT_SQL
     cast_type = 'TEXT'
 
-    def get_placeholder(self, value, compiler, connection):
+    def get_placeholder(self, value=None, compiler=None, connection=None):
         """Tell postgres to encrypt this field using PGP."""
+        if self._is_case_expression(value):
+            return "%s"
         return self.encrypt_sql.format(get_setting(connection, 'PGCRYPTO_KEY'))
 
     def get_decrypt_sql(self, connection):
         """Get decrypt sql."""
         return self.decrypt_sql.format(get_setting(connection, 'PGCRYPTO_KEY'))
+    
+    def _is_case_expression(self, value):
+        if not hasattr(value, 'get_source_expressions'):
+            return False
+        if isinstance(value, Case):
+            return True
+        if isinstance(value, Cast):
+            source_expressions = value.get_source_expressions()
+            if len(source_expressions) == 1:
+                return self._is_case_expression(source_expressions[0])
+        return False
 
 
 class DecimalPGPFieldMixin:
