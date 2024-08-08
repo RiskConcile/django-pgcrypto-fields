@@ -43,7 +43,9 @@ class EmailPGPPublicKeyField(PGPPublicKeyFieldMixin, models.EmailField):
 
 
 class JSONPGPPublicKeyField(PGPPublicKeyFieldMixin, models.JSONField):
-    """JSON PGP public key encrypted field."""
+    """JSON PGP public key encrypted field for postgres."""
+    encrypt_sql = PGP_PUB_ENCRYPT_SQL_WITH_NULLIF
+    cast_type = 'jsonb'
 
 
 class IntegerPGPPublicKeyField(PGPPublicKeyFieldMixin, models.IntegerField):
@@ -88,7 +90,9 @@ class EmailPGPSymmetricKeyField(PGPSymmetricKeyFieldMixin, models.EmailField):
     """Email PGP symmetric key encrypted field."""
 
 class JSONSymmetricKeyField(PGPSymmetricKeyFieldMixin, models.JSONField):
-    """JSON symmetric key encrypted field."""
+    """Float PGP symmetric key encrypted field for postgres."""
+    encrypt_sql = PGP_SYM_ENCRYPT_SQL_WITH_NULLIF
+    cast_type = 'jsonb'
 
 class IntegerPGPSymmetricKeyField(PGPSymmetricKeyFieldMixin, models.IntegerField):
     """Integer PGP symmetric key encrypted field."""
